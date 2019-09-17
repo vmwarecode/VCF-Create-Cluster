@@ -118,9 +118,9 @@ You must have valid host and vSAN (if using vSAN storage) license key specified 
 A DHCP server must be configured on the VXLAN VLAN of the management domain. When NSX creates VXLAN VTEPs for the domain, they are assigned IP addresses from the DHCP server.
 
 
-The sample specifications file is provide along as create_cluster_spec.json
+Sample specification file "create_cluster_spec.json" will be used for creating cluster operation. So fill the required details and validate before executing the script.
+For more information on the provided sample file, please refer to API reference documentation.
 
 Usage:
     python create_cluster.py <hostname> <username> <password>
 
-create_cluster_spec.json is the input sample input specifications file.
