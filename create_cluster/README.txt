@@ -1,8 +1,30 @@
-Create Cluster:
+INTRODUCTION
+------------:
 
+This module contains script files to create a cluster.
 After you add the primary cluster, you can add more clusters to expand the domain.
 
-Prerequisites:
+
+REQUIREMENTS:
+------------
+
+This module requires the following modules:
+
+ * Python 2.7.x
+   Libraries
+ 	* requests
+ 	* sys
+ 	* json
+ 	* time
+
+ * The scripts must be run outside sddc-manager environment.
+
+ * DNS resolution must be done for sddc-manager.
+
+
+
+PREREQUSITES:
+--------------
 
 The following data is required
 
@@ -24,7 +46,7 @@ Hosts details
 
 Datastore details
 
-NOTE
+NOTE:
 Only one of "vsanDatastoreSpec" (For VSAN) or NFS "nfsDatastoreSpecs" (For NFS) must be specified.
 
 For VSAN
@@ -72,8 +94,9 @@ Network Details
 
 NSX cluster Details
 
-NOTE
+NOTE:
 Only one of "nsxVClusterSpec" (For NSX-V) or "nsxTClusterSpec" (For NSX-T) must be specified.
+
 For NSX-V
 
 	->VLAN ID of the VXLAN
@@ -118,9 +141,11 @@ You must have valid host and vSAN (if using vSAN storage) license key specified 
 A DHCP server must be configured on the VXLAN VLAN of the management domain. When NSX creates VXLAN VTEPs for the domain, they are assigned IP addresses from the DHCP server.
 
 
+USAGE:
+-----
+
 Sample specification file "create_cluster_spec.json" will be used for creating cluster operation. So fill the required details and validate before executing the script.
 For more information on the provided sample file, please refer to API reference documentation.
 
-Usage:
-    python create_cluster.py <hostname> <username> <password>
+Usage:	python create_cluster.py <hostname> <username> <password>
 
