@@ -11,21 +11,21 @@ def get_request(url,username,password):
     if(response.status_code == 200):
         data = json.loads(response.text)
     else:
-        print "Error reaching the server."
+        print ("Error reaching the server.")
         exit(1)
     return data
 
 def post_request(data,url,username,password):
     headers = {'Content-Type': 'application/json'}
-    print url
-    print data
+    print (url)
+    print (data)
     response = requests.post(url, headers=headers, json=data, auth=(username, password))
     if(response.status_code == 200):
         data = json.loads(response.text)
     else:
-        print "Error reaching the server."
+        print ("Error reaching the server.")
         response = json.loads(response.text)
-        print json.dumps(response,indent=4, sort_keys=True)
+        print (json.dumps(response,indent=4, sort_keys=True))
         exit(1)
     return data
 
@@ -36,10 +36,10 @@ def poll_on_id(url,username,password):
     while(status == 'IN_PROGRESS'):
         c = c+1
         n = c%6
-        print "\rOperation in progress","."*n," "*(5-n),
+        print ("\rOperation in progress" + "."*n + " "*(5-n),end = "")
         status = get_request(url,username,password)['status']
         time.sleep(5)
-    print ""
+    print ("")
     return status
 
 
@@ -47,30 +47,29 @@ def create_cluster(hostname,username,password):
     data = read_input()
     url =  hostname+'/v1/clusters/validations/creations'
     response = post_request(data,url,username,password)
-    request_id = response['id']
-    print "Validating the input...."
+    print ('Validating the input....')
     if(response['executionStatus'] == 'COMPLETED' and response['resultStatus'] == 'SUCCEEDED'):
-        print 'Validation Succeeded.'
+        print ('Validation Succeeded.')
     else:
-        print 'Validation failed.'
-        print json.dumps(response,indent=4, sort_keys=True)
+        print ('Validation failed.')
+        print (json.dumps(response,indent=4, sort_keys=True))
         exit(0)
     url = hostname + '/v1/clusters'
     response = post_request(data,url,username,password)
-    print 'Creating Domain...'
+    print ('Creating Domain...')
     task_id = response['id']
     url = hostname+'/v1/tasks/'+task_id
-    result = poll_on_id(url,username,password,True)
+    result = poll_on_id(url,username,password)
     if(result != 'SUCCESSFUL'):
-        print 'Successfully created Cluster.'
+        print ('Successfully created Cluster.')
     else:
-        print 'Cluster Creation failed.'
-        print json.dumps(response,indent=4, sort_keys=True)
-        print result
+        print ('Cluster Creation failed.')
+        print (json.dumps(response,indent=4, sort_keys=True))
+        print (result)
 
 #cluster_creation_spec.json is the preconfigured insput spec file.
 def read_input():
-    with open('cluster_creation_spec.json') as json_file:
+    with open('create_cluster_spec.json') as json_file:
         data = json.load(json_file)
         return data
 
@@ -78,7 +77,7 @@ def get_help():
     help_description = '''\n\t\t----Create Cluster----
     Usage:
     python create_cluster.py <hostname> <username> <password>\n Refer to documentation for more detais\n'''
-    print help_description
+    print (help_description)
 
 
 def action_performer():
@@ -86,11 +85,11 @@ def action_performer():
     if(len(arguments) < 3):
         get_help()
         return
-    hostname = 'https://'+arguments[1]
-    username = arguments[2]
-    passwsord = arguments[3]
-    create_cluster(hostname,username,password)
-    return
+    else:
+        hostname = 'https://'+arguments[1]
+        username = arguments[2]
+        password = arguments[3]
+        create_cluster(hostname,username,password)
 
 action_performer()
 
